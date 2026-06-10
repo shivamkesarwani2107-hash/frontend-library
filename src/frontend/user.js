@@ -1,0 +1,275 @@
+import { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
+
+export default function User() {
+
+    const navigate = useNavigate();
+    const [books, setBooks] = useState([]);
+    const [search, setSearch] = useState("");
+    const [page, setPage] = useState(1);
+    const [sort, setSort] = useState("");
+    const limit = 5;
+    useEffect(() => {
+
+        fetch(
+            `http://localhost:4000/book?page=${page}&limit=${limit}&search=${search}&sort=${sort}`
+        )
+            .then((resp) => resp.json())
+            .then((data) => setBooks(data));
+
+    }, [page, search, sort]);
+
+    const token = localStorage.getItem("accessToken");                  
+
+    function addToWishlist(id) {
+
+        const token =
+            localStorage.getItem(
+                "accessToken"
+            );
+
+        fetch(
+            `http://localhost:4000/wishlist/${id}`,
+            {
+                method: "PUT",
+
+                headers: {
+                    Authorization:
+                        `Bearer ${token}`
+                }
+            }
+        )
+            .then((resp) => resp.json())
+            .then((data) => alert(data.message));
+    }
+
+    function deleteBook(id) {
+        fetch(`http://localhost:4000/book/${id}`, {
+            method: "DELETE"
+        })
+            .then((resp) => resp.json())
+            .then((data) => {
+                alert(data.message);
+
+                setBooks(
+                    books.filter(
+                        (book) => book._id !== id
+                    )
+                );
+            })
+    }
+
+    function handleLogout() {
+
+        localStorage.removeItem(
+            "accessToken"
+        );
+
+        localStorage.removeItem(
+            "refreshToken"
+        );
+
+        navigate("/goodbye")
+    }
+    return (
+        <div className="min-h-screen bg-slate-100">
+
+            <div className="flex justify-between items-center px-10 py-5 bg-blue-600 text-white shadow-lg">
+
+                <h1 className="text-2xl font-bold">
+                    📚 Library Management
+                </h1>
+
+                <div className="flex gap-6 items-center">
+
+
+                    <button
+                        onClick={() => navigate("/profile")}
+                        className="hover:text-yellow-300"
+                    >
+                        My Profile
+                    </button>
+
+                    <button
+                        onClick={() => navigate("/addbook")}
+                        className="hover:text-yellow-300"
+                    >
+                        Add Book
+                    </button>
+
+                    <button
+                        onClick={() => navigate("/wishlist")}
+                        className="hover:text-yellow-300"
+                    >
+                        Wishlist
+                    </button>
+
+                    <button
+                        onClick={() => navigate("/login")}
+                        className="bg-white text-blue-600 px-4 py-2 rounded-lg font-semibold"
+                    >
+                        Login
+                    </button>
+
+                    <button
+                        onClick={handleLogout}
+                        className="bg-white text-blue-600 px-4 py-2 rounded-lg font-semibold"
+                    >
+                        Logout
+                    </button>
+
+                </div>
+
+            </div>
+
+            <div className="flex flex-col items-center justify-center mt-20">
+
+                <h1 className="text-5xl font-bold text-blue-700 mb-4">
+                    Welcome to Library
+                </h1>
+
+                <p className="text-gray-600 text-lg mb-6">
+                    Discover, Manage and Organize Your Books Easily
+                </p>
+
+                {!token ? (
+                    <button
+                        onClick={() => navigate("/signup")}
+                        className="bg-blue-600 text-white px-8 py-3 rounded-lg hover:bg-blue-700"
+                    >
+                        Get Started
+                    </button>
+                ) : (
+                    <button
+                        onClick={() => navigate("/profile")}
+                        className="bg-green-600 text-white px-8 py-3 rounded-lg hover:bg-green-700"
+                    >
+                        My Profile
+                    </button>
+                )}
+
+            </div>
+
+            <div className="mt-16 px-10 pb-10">
+
+                <h2 className="text-3xl font-bold text-center mb-8 underline">
+                    Available Books
+                </h2>
+
+                <div className="flex justify-center mb-4">
+
+                    <select
+                        value={sort}
+                        onChange={(e) => setSort(e.target.value)}
+                        className="border p-2 rounded-md bg-white"
+                    >
+
+                        <option value="">
+                            Sort Books
+                        </option>
+
+                        <option value="asc">
+                            A-Z
+                        </option>
+
+                        <option value="desc">
+                            Z-A
+                        </option>
+
+                    </select>
+
+                </div>
+
+
+                <div className="flex justify-center mb-6">
+                    <input
+                        type="text"
+                        placeholder="Search book by title..."
+                        value={search}
+                        onChange={(e) => {
+                            setSearch(e.target.value);
+                            setPage(1);
+                        }} className="border p-3 rounded-lg w-[400px] outline-none hover:border-2 hover:border-slate-400"
+                    />
+                </div>
+
+                {
+                    books.map((book) => (
+
+                        <div
+                            key={book._id}
+                            className="bg-white border text-center rounded-lg p-5 mb-4 max-w-md mx-auto shadow hover:shadow-md transition"
+                        >
+
+                            <h3 className="text-xl font-bold text-blue-600">
+                                📚 {book.title}
+                            </h3>
+
+                            <p className="text-gray-600 mt-2">
+                                ✍️ {book.author}
+                            </p>
+
+                            <div className="flex gap-3 mt-4 justify-between text-center">
+
+                                <button
+                                    onClick={() => addToWishlist(book._id)}
+                                    className="bg-pink-500 text-white px-3 py-2 rounded-md text-sm hover:bg-pink-600"
+                                >
+                                    ❤️ Wishlist
+                                </button>
+
+                                <button
+                                    onClick={() => navigate("/read")}
+                                    className="bg-green-500 text-white px-3 py-2 rounded-md text-sm hover:bg-green-600"
+                                >
+                                    📖 Read Now
+                                </button>
+
+                                <button
+                                    onClick={() => deleteBook(book._id)}
+                                    className="bg-red-500 text-white px-3 py-2 rounded-md text-sm hover:bg-red-600"
+                                >
+                                    🗑 Delete
+                                </button>
+
+                                <button
+                                    onClick={() => navigate(`/editbook/${book._id}`)}
+                                    className="bg-yellow-500 text-white px-3 py-2 rounded-md text-sm"
+                                >
+                                    ✏️ Edit
+                                </button>
+
+                            </div>
+
+                        </div>
+
+                    ))
+                }
+                <div className="flex justify-center gap-4 mt-6">
+
+                    <button
+                        onClick={() => setPage(page - 1)}
+                        disabled={page === 1}
+                        className="border-2 hover:border-black px-4 py-2 rounded bg-slate-300"
+                    >
+                        Prev
+                    </button>
+
+                    <span className="font-semibold mt-2">
+                        Page {page}
+                    </span>
+
+                    <button
+                        onClick={() => setPage(page + 1)}
+                        disabled={books.length < limit}
+                        className="border-2 hover:border-black px-4 py-2 rounded bg-slate-300"
+                    >
+                        Next
+                    </button>
+
+                </div>
+            </div>
+
+        </div>
+    );
+}
