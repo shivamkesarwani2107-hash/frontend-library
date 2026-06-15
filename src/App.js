@@ -34,7 +34,7 @@ export default function App() {
           <Profile />
         </ProtectedRoute>} />
 
-        <Route path="/read" element={<ProtectedRoute>
+        <Route path="/read/:id" element={<ProtectedRoute>
           <Read />
         </ProtectedRoute>} />
 

@@ -1,20 +1,51 @@
+import { useParams } from "react-router-dom";
+import { useState, useEffect } from "react";
+
 export default function Read() {
+    const { id } = useParams();
+    const [book, setBook] = useState({});
+    const [rating, setRating] = useState("");
+
+    useEffect(() => {
+        fetch(`http://localhost:4000/book/${id}`)
+            .then((resp) => resp.json())
+            .then((data) => {
+                setBook(data);
+                setRating(data.rating);
+            })
+
+    }, [id])
+
     return (
         <div className="min-h-screen bg-slate-100 p-10">
 
             <div className="max-w-4xl mx-auto bg-white p-8 rounded-lg shadow">
 
                 <h1 className="text-4xl font-bold text-blue-600 mb-4">
-                    Rich Dad Poor Dad
+                    {book.title}
                 </h1>
 
                 <h3 className="text-xl text-gray-600 mb-6">
-                    Author: Shivam
+                    Author:  {book.author}
                 </h3>
+
+                <select
+                    value={rating}
+                    onChange={(e) =>
+                        setRating(Number(e.target.value))
+                    }
+                    className="bg-gray-100 border-2 border-black"
+                >
+                    <option value="1">⭐</option>
+                    <option value="2">⭐⭐</option>
+                    <option value="3">⭐⭐⭐</option>
+                    <option value="4">⭐⭐⭐⭐</option>
+                    <option value="5">⭐⭐⭐⭐⭐</option>
+                </select>
 
                 <p className="text-gray-700 leading-8 whitespace-pre-line">
 
-{`
+                    {`
 Chapter 1 - The Beginning
 
 Rich Dad Poor Dad is one of the most popular personal finance books ever written.

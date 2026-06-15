@@ -54,7 +54,7 @@ export default function Wishlist() {
                                     ❤️ Wishlist
                                 </span>
                                 <button
-                                    onClick={() => navigate("/read")}
+                                    onClick={() => navigate(`/read/${book._id}`)}
                                     className="bg-green-500 text-white px-3 py-2 rounded-md text-sm hover:bg-green-600"
                                 >
                                     📖 Read Now
