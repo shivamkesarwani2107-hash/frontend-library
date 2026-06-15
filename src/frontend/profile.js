@@ -87,7 +87,7 @@ export default function Profile() {
                             {user.email}
                         </p>
 
-                    </div>
+                    </div>  
 
                 </div>
 

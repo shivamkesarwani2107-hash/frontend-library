@@ -15,12 +15,23 @@ export default function Goodbye() {
                 Hope to see you again soon.
             </p>
 
-            <button
-                onClick={() => navigate("/login")}
-                className="bg-blue-600 text-white px-6 py-3 rounded-lg"
-            >
-                Login Again
-            </button>
+            <div className="flex gap-4">
+
+                <button
+                    onClick={() => navigate("/login")}
+                    className="bg-blue-600 text-white px-6 py-3 rounded-lg"
+                >
+                    Login
+                </button>
+
+                <button
+                    onClick={() => navigate("/")}
+                    className="bg-blue-600 text-white px-6 py-3 rounded-lg"
+                >
+                    Home Page
+                </button>
+
+            </div>
 
         </div>
     );

@@ -8,18 +8,29 @@ export default function User() {
     const [search, setSearch] = useState("");
     const [page, setPage] = useState(1);
     const [sort, setSort] = useState("");
+    const [debouncedSearch, setDebouncedSearch] = useState("");
+    const [showDropdown, setShowDropdown] = useState(false);
     const limit = 5;
+
+    useEffect(() => {
+        const timer = setTimeout(() => {
+            setDebouncedSearch(search);
+        }, 800);
+
+        return () => clearTimeout(timer);
+    }, [search]);
+
     useEffect(() => {
 
         fetch(
-            `http://localhost:4000/book?page=${page}&limit=${limit}&search=${search}&sort=${sort}`
+            `http://localhost:4000/book?page=${page}&limit=${limit}&search=${debouncedSearch}&sort=${sort}`
         )
             .then((resp) => resp.json())
             .then((data) => setBooks(data));
 
-    }, [page, search, sort]);
+    }, [page, sort, debouncedSearch]);
 
-    const token = localStorage.getItem("accessToken");                  
+    const token = localStorage.getItem("accessToken");
 
     function addToWishlist(id) {
 
@@ -83,12 +94,16 @@ export default function User() {
                 <div className="flex gap-6 items-center">
 
 
-                    <button
-                        onClick={() => navigate("/profile")}
-                        className="hover:text-yellow-300"
-                    >
-                        My Profile
-                    </button>
+                    {
+                        token ? (
+                            <button
+                                onClick={() => navigate("/profile")}
+                                className="hover:text-yellow-300"
+                            >
+                                My Profile
+                            </button>
+                        ) : null
+                    }
 
                     <button
                         onClick={() => navigate("/addbook")}
@@ -104,12 +119,69 @@ export default function User() {
                         Wishlist
                     </button>
 
-                    <button
-                        onClick={() => navigate("/login")}
-                        className="bg-white text-blue-600 px-4 py-2 rounded-lg font-semibold"
-                    >
-                        Login
-                    </button>
+                    {
+                        !token ? (
+                            <button
+                                onClick={() => navigate("/login")}
+                                className="bg-white text-blue-600 px-4 py-2 rounded-lg font-semibold"
+                            >
+                                Login
+                            </button>
+
+                        ) : (
+
+                            <div className="relative">
+
+                                <button
+                                    onClick={() =>
+                                        setShowDropdown(!showDropdown)
+                                    }
+                                    className="hover:text-yellow-300"
+                                >
+
+                                    Welcome User ▼
+
+                                </button>
+
+                                {
+                                    showDropdown && (
+
+                                        <div
+                                            className="absolute right-0 mt-2 w-40 bg-white text-black rounded-lg shadow-lg "
+                                        >
+
+                                            <button
+                                                onClick={() =>
+                                                    navigate("/profile")
+                                                }
+                                                className="block w-full text-left px-4 py-2 rounded-lg  hover:bg-gray-200"
+                                            >
+                                                Profile
+                                            </button>
+
+                                            <button
+                                                onClick={() =>
+                                                    navigate("/wishlist")
+                                                }
+                                                className="block w-full text-left px-4 py-2 hover:bg-gray-200"
+                                            >
+                                                Wishlist
+                                            </button>
+
+                                            <button
+                                                onClick={handleLogout}
+                                                className="block w-full text-left px-4 py-2 text-red-500 hover:bg-gray-200">
+                                                Logout
+                                            </button>
+
+                                        </div>
+
+                                    )
+                                }
+
+                            </div>
+                        )
+                    }
 
                     <button
                         onClick={handleLogout}
@@ -270,6 +342,6 @@ export default function User() {
                 </div>
             </div>
 
-        </div>
+        </div >
     );
 }
