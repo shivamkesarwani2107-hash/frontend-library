@@ -21,6 +21,14 @@ export default function Read() {
 
             <div className="max-w-4xl mx-auto bg-white p-8 rounded-lg shadow">
 
+                
+              <div className="text-center">
+                  <img
+                    src="https://covers.openlibrary.org/b/isbn/9780735211292-L.jpg"
+                    alt="Atomic Habits"
+                    className="w-1/3 h-1/2 mx-auto object-cover rounded"
+                />
+
                 <h1 className="text-4xl font-bold text-blue-600 mb-4">
                     {book.title}
                 </h1>
@@ -42,6 +50,8 @@ export default function Read() {
                     <option value="4">⭐⭐⭐⭐</option>
                     <option value="5">⭐⭐⭐⭐⭐</option>
                 </select>
+              </div>
+
 
                 <p className="text-gray-700 leading-8 whitespace-pre-line">
 
