@@ -50,10 +50,8 @@ export default function Wishlist() {
                             </p>
 
                             <div className="mt-4 flex justify-between">
-                                <span className="bg-pink-100 text-pink-600 px-3 py-1 rounded-full text-sm">
-                                    ❤️ Wishlist
-                                </span>
-                                <button
+                               
+                                <button 
                                     onClick={() => navigate(`/read/${book._id}`)}
                                     className="bg-green-500 text-white px-3 py-2 rounded-md text-sm hover:bg-green-600"
                                 >
