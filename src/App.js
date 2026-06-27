@@ -7,8 +7,9 @@ import Profile from "./frontend/profile.js";
 import Read from "./frontend/read.js";
 import Wishlist from "./frontend/wishlist.js";
 import EditBook from "./frontend/editbook.js";
-import GoodBye from "./frontend/goodbye.js"
+import GoodBye from "./frontend/goodbye.js";
 import ProtectedRoute from "./frontend/ProtectedRoute.js";
+import Category from ".//frontend/category.js";
 export default function App() {
   return (
     <BrowserRouter>
@@ -40,6 +41,11 @@ export default function App() {
 
         <Route path="/wishlist" element={<ProtectedRoute>
           <Wishlist />
+        </ProtectedRoute>} />
+
+        
+        <Route path="/category" element={<ProtectedRoute>
+          <Category />
         </ProtectedRoute>} />
 
         <Route path="/editbook/:id" element={<ProtectedRoute>

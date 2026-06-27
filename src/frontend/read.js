@@ -1,20 +1,36 @@
 import { useParams } from "react-router-dom";
-import { useState, useEffect } from "react";
+import { useQuery } from "@tanstack/react-query";
 
 export default function Read() {
     const { id } = useParams();
-    const [book, setBook] = useState({});
-    const [rating, setRating] = useState("");
+const fetchBook = async () =>{
+    console.log("BOOK TESTING");
 
-    useEffect(() => {
-        fetch(`http://localhost:4000/book/${id}`)
-            .then((resp) => resp.json())
-            .then((data) => {
-                setBook(data);
-                setRating(data.rating);
-            })
+    const resp =await fetch(
+        `http://localhost:4000/book/${id}`
+    );
 
-    }, [id])
+    const data = await resp.json();
+
+     if (!resp.ok) {
+        throw new Error(data.message);
+    }
+
+    return data;
+    
+}
+
+
+const { data: book = {} } = useQuery({
+
+    queryKey: ["book", id],
+
+    queryFn: fetchBook,
+
+    staleTime: 1000 * 60 * 5,
+
+});
+
 
     return (
         <div className="min-h-screen bg-slate-100 p-10">
@@ -37,19 +53,7 @@ export default function Read() {
                     Author:  {book.author}
                 </h3>
 
-                <select
-                    value={rating}
-                    onChange={(e) =>
-                        setRating(Number(e.target.value))
-                    }
-                    className="bg-gray-100 border-2 border-black"
-                >
-                    <option value="1">⭐</option>
-                    <option value="2">⭐⭐</option>
-                    <option value="3">⭐⭐⭐</option>
-                    <option value="4">⭐⭐⭐⭐</option>
-                    <option value="5">⭐⭐⭐⭐⭐</option>
-                </select>
+              
               </div>
 
 

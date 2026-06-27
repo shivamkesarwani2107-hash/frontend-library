@@ -1,45 +1,77 @@
 import { useState } from "react";
+import { useMutation } from "@tanstack/react-query";
 import { useNavigate } from "react-router-dom";
 export default function Login() {
     const navigate = useNavigate();
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
-    function handleLogin() {
-        if (!email || !password) {
-            alert("ALL FIELDS ARE REQUIRED")
-            return;
-        }
-        fetch("http://localhost:4000/login", {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json"
-            },
-            body: JSON.stringify({
-                email,
-                password
-            })
-        })
-            .then((resp) => resp.json())
-            .then((data) => {
-                alert(data.message);
 
-                if (data.accessToken) {
-
-                    localStorage.setItem(
-                        "accessToken",
-                        data.accessToken
-                    );
-
-                    localStorage.setItem(
-                        "refreshToken",
-                        data.refreshToken
-                    );
-                    console.log(
-                        localStorage.getItem("accessToken")
-                    );
+    const loginMutation = useMutation({
+        mutationFn: async (loginData) => {
+            const resp = await fetch(
+                "http://localhost:4000/login",
+                {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json",
+                    },
+                    body: JSON.stringify(loginData),
                 }
-                navigate("/")
-            })
+            );
+
+
+            const data = await resp.json();
+
+            if (!resp.ok) {
+                throw new Error(data.message);
+            }
+
+            return data;
+
+        },
+
+        onSuccess: (data) => {
+
+            alert(data.message);
+
+            localStorage.setItem(
+                "accessToken",
+                data.accessToken
+            );
+
+            localStorage.setItem(
+                "refreshToken",
+                data.refreshToken
+            );
+
+            navigate("/");
+
+        },
+
+        onError: (error) => {
+
+            alert(error.message);
+
+        },
+    })
+
+    function handleLogin() {
+
+        if (!email || !password) {
+
+            alert("ALL FIELDS ARE REQUIRED");
+
+            return;
+
+        }
+
+        loginMutation.mutate({
+
+            email,
+            password,
+
+        });
+
     }
     return (
         <div className="flex justify-center items-center h-screen bg-gray-100">
@@ -69,7 +101,7 @@ export default function Login() {
                 <button
                     onClick={handleLogin}
                     className="border-2 p-3 rounded-md w-full bg-blue-600 text-white"
-                >   
+                >
                     Login
                 </button>
 

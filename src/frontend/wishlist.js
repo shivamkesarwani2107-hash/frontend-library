@@ -1,29 +1,38 @@
-import { useEffect, useState } from "react";
+import { useQuery } from "@tanstack/react-query";
 import { useNavigate } from "react-router-dom";
 export default function Wishlist() {
     const navigate = useNavigate();
-    const [books, setBooks] = useState([]);
 
-    useEffect(() => {
+    const fetchWishlist = async () => {
+        console.log("Wishlist API Called");
 
-        const token =
-            localStorage.getItem(
-                "accessToken"
-            );
+        const token = localStorage.getItem("accessToken");
 
-        fetch(
+        const resp = await fetch(
             "http://localhost:4000/wishlist",
             {
                 headers: {
-                    Authorization:
-                        `Bearer ${token}`
-                }
+                    Authorization: `Bearer ${token}`,
+                },
+
             }
         )
-            .then((resp) => resp.json())
-            .then((data) => setBooks(data));
 
-    }, []);
+        const data = await resp.json();
+
+        if (!resp.ok) {
+            throw new Error(data.message);
+        }
+
+        return data;
+
+    }
+
+    const { data: books = [] } = useQuery({
+        queryKey: ["wishlist"],
+        queryFn: fetchWishlist,
+        staleTime: 1000 * 60 * 5,
+    });
 
     return (
         <div className="min-h-screen bg-slate-100 p-10">
@@ -50,8 +59,8 @@ export default function Wishlist() {
                             </p>
 
                             <div className="mt-4 flex justify-between">
-                               
-                                <button 
+
+                                <button
                                     onClick={() => navigate(`/read/${book._id}`)}
                                     className="bg-green-500 text-white px-3 py-2 rounded-md text-sm hover:bg-green-600"
                                 >

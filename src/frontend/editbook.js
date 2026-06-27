@@ -8,6 +8,7 @@ export default function EditBook() {
 
     const [title, setTitle] = useState("");
     const [author, setAuthor] = useState("");
+    const [category, setCategory] = useState("");
 
     function updateBook() {
 
@@ -18,7 +19,8 @@ export default function EditBook() {
             },
             body: JSON.stringify({
                 title,
-                author
+                author,
+                category
             })
         })
             .then((resp) => resp.json())
@@ -52,6 +54,14 @@ export default function EditBook() {
                     placeholder="Author Name"
                     value={author}
                     onChange={(e) => setAuthor(e.target.value)}
+                    className="border p-3 w-full rounded mb-4"
+                />
+
+                <input
+                    type="text"
+                    placeholder="Category"
+                    value={category}
+                    onChange={(e) => setCategory(e.target.value)}
                     className="border p-3 w-full rounded mb-4"
                 />
 

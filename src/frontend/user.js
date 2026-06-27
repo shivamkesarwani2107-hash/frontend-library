@@ -1,9 +1,10 @@
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-
+import { useQuery, } from "@tanstack/react-query";
 export default function User() {
 
     const navigate = useNavigate();
+
     const [books, setBooks] = useState([]);
     const [search, setSearch] = useState("");
     const [page, setPage] = useState(1);
@@ -20,15 +21,27 @@ export default function User() {
         return () => clearTimeout(timer);
     }, [search]);
 
-    useEffect(() => {
+    const fetchBooks = async ({ queryKey }) => {
 
-        fetch(
-            `http://localhost:4000/book?page=${page}&limit=${limit}&search=${debouncedSearch}&sort=${sort}`
-        )
-            .then((resp) => resp.json())
-            .then((data) => setBooks(data));
+        const [, page, limit, search, sort] = queryKey;
 
-    }, [page, sort, debouncedSearch]);
+        const response = await fetch(
+            `http://localhost:4000/book?page=${page}&limit=${limit}&search=${search}&sort=${sort}`
+        );
+
+        return response.json();
+    };
+    const {
+        data: book = [],
+        isLoading,
+        isError,
+        error
+    } = useQuery({
+        queryKey: ["book", page, limit, debouncedSearch, sort],
+        queryFn: fetchBooks,
+        staleTime: 1000 * 60 * 5,
+        refetchOnMount: false,
+    });
 
     const token = localStorage.getItem("accessToken");
 
@@ -82,6 +95,27 @@ export default function User() {
 
         navigate("/goodbye")
     }
+
+    if (isLoading) {
+        return (
+            <div className="min-h-screen flex justify-center items-center">
+                <h1 className="text-3xl font-bold text-blue-600">
+                    Loading...
+                </h1>
+            </div>
+        );
+    }
+
+    if (isError) {
+        return (
+            <div className="min-h-screen flex justify-center items-center">
+                <h1 className="text-3xl font-bold text-red-600">
+                    {error.message}
+                </h1>
+            </div>
+        );
+    }
+
     return (
         <div className="min-h-screen bg-slate-100">
 
@@ -117,6 +151,13 @@ export default function User() {
                         className="hover:text-yellow-300"
                     >
                         Wishlist
+                    </button>
+
+                     <button
+                        onClick={() => navigate("/category")}
+                        className="hover:text-yellow-300"
+                    >
+                        Category
                     </button>
 
                     {
@@ -166,6 +207,15 @@ export default function User() {
                                                 className="block w-full text-left px-4 py-2 hover:bg-gray-200"
                                             >
                                                 Wishlist
+                                            </button>
+
+                                            <button
+                                                onClick={() =>
+                                                    navigate("/category")
+                                                }
+                                                className="block w-full text-left px-4 py-2 hover:bg-gray-200"
+                                            >
+                                                Category
                                             </button>
 
                                             <button
@@ -266,7 +316,7 @@ export default function User() {
                 </div>
 
                 {
-                    books.map((book) => (
+                    book.map((book) => (
 
                         <div
                             key={book._id}
@@ -311,6 +361,7 @@ export default function User() {
                                     ✏️ Edit
                                 </button>
 
+
                             </div>
 
                         </div>
@@ -333,7 +384,7 @@ export default function User() {
 
                     <button
                         onClick={() => setPage(page + 1)}
-                        disabled={books.length < limit}
+                        disabled={book.length < limit}
                         className="border-2 hover:border-black px-4 py-2 rounded bg-slate-300"
                     >
                         Next

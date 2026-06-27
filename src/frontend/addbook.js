@@ -1,37 +1,61 @@
 import { useState } from "react";
-
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 export default function AddBook() {
 
     const [title, setTitle] = useState("");
     const [author, setAuthor] = useState("");
     const [category, setCategory] = useState("");
+    const queryClient = useQueryClient();
+
+    const addBookMutation = useMutation({
+        mutationFn: async (bookData) => {
+            const response = await fetch(
+                "http://localhost:4000/book",
+                {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json",
+                    },
+                    body: JSON.stringify(bookData),
+                }
+            );
+            return response.json();
+        },
+
+        onSuccess: (data) => {
+
+            alert(data.message);
+
+            setTitle("");
+            setAuthor("");
+            setCategory("");
+
+            queryClient.invalidateQueries({
+                queryKey: ["book"],
+            });
+        },
+
+        onError: (error) => {
+    alert(error.message);
+}
+
+    });
+
 
     function handleSubmit() {
 
-        fetch("http://localhost:4000/book", {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json"
-            },
-            body: JSON.stringify({
-                title,
-                author,
-                category
-            })
-        })
-            .then((resp) => resp.json())
-            .then((data) => {
-                alert(data.message);
-
-                setTitle("");
-                setAuthor("");
-                setCategory("");
-            });
-
         if (!title || !author || !category) {
-            alert("All fields are required");
+
+            alert("All fileds are required");
+
             return;
         }
+
+        addBookMutation.mutate({
+            title,
+            author,
+            category,
+        });
     }
 
     return (
