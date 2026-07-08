@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 
 export default function EditBook() {
@@ -7,8 +7,10 @@ export default function EditBook() {
     const navigate = useNavigate();
 
     const [title, setTitle] = useState("");
-    const [author, setAuthor] = useState("");
-    const [category, setCategory] = useState("");
+    const [authors, setAuthors] = useState([]);
+    const [categories, setCategories] = useState([]);
+    const [authorId, setAuthorId] = useState("");
+    const [categoryId, setCategoryId] = useState("");
 
     function updateBook() {
 
@@ -19,18 +21,50 @@ export default function EditBook() {
             },
             body: JSON.stringify({
                 title,
-                author,
-                category
+                authorId,
+                categoryId
             })
         })
             .then((resp) => resp.json())
             .then((data) => {
-
                 alert(data.message);
 
                 navigate("/");
             });
+
+        if (!title || !authorId || !categoryId) {
+            alert("All fields are required");
+            return;
+        }
     }
+
+    useEffect(() => {
+
+
+        fetch(`http://localhost:4000/book/${id}`)
+            .then((resp) => resp.json())
+            .then((book) => {
+                console.log("book response:", book);
+                setTitle(book.title || "");
+            });
+
+
+        fetch("http://localhost:4000/category")
+            .then((resp) => resp.json())
+            .then((data) => {
+
+                setCategories(data);
+
+            });
+
+        fetch("http://localhost:4000/author")
+            .then((resp) => resp.json())
+            .then((data) => {
+                setAuthors(data);
+            });
+
+    }, [id]);
+
 
     return (
         <div className="min-h-screen flex justify-center items-center bg-slate-100">
@@ -49,21 +83,55 @@ export default function EditBook() {
                     className="border p-3 w-full rounded mb-4"
                 />
 
-                <input
-                    type="text"
-                    placeholder="Author Name"
-                    value={author}
-                    onChange={(e) => setAuthor(e.target.value)}
-                    className="border p-3 w-full rounded mb-4"
-                />
+                <select
+                    value={authorId}
+                    onChange={(e) => setAuthorId(e.target.value)}
+                    className="border p-3 rounded w-full"
+                >
+                    <option value="">Select Author</option>
 
-                <input
-                    type="text"
-                    placeholder="Category"
-                    value={category}
-                    onChange={(e) => setCategory(e.target.value)}
-                    className="border p-3 w-full rounded mb-4"
-                />
+                    {authors.map((author) => (
+                        <option key={author._id} value={author._id}>
+                            {author.name}
+                        </option>
+                    ))}
+                </select>
+
+                <select
+
+                    value={categoryId}
+
+                    onChange={(e) => setCategoryId(e.target.value)}
+
+                    className="border p-3 rounded w-full"
+
+                >
+
+                    <option value="">
+
+                        Select Category
+
+                    </option>
+
+                    {
+
+                        categories.map((category) => (
+
+                            <option
+                                key={category._id}
+
+                                value={category._id}
+                            >
+                                {category.name}
+
+                            </option>
+
+                        ))
+
+                    }
+
+                </select>
+
 
                 <button
                     onClick={updateBook}

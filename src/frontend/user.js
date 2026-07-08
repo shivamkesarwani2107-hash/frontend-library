@@ -4,7 +4,6 @@ import { useQuery, } from "@tanstack/react-query";
 export default function User() {
 
     const navigate = useNavigate();
-
     const [books, setBooks] = useState([]);
     const [search, setSearch] = useState("");
     const [page, setPage] = useState(1);
@@ -30,7 +29,8 @@ export default function User() {
         );
 
         return response.json();
-    };
+    };  
+    
     const {
         data: book = [],
         isLoading,
@@ -109,9 +109,11 @@ export default function User() {
     if (isError) {
         return (
             <div className="min-h-screen flex justify-center items-center">
+
                 <h1 className="text-3xl font-bold text-red-600">
                     {error.message}
                 </h1>
+
             </div>
         );
     }
@@ -152,14 +154,7 @@ export default function User() {
                     >
                         Wishlist
                     </button>
-
-                     <button
-                        onClick={() => navigate("/category")}
-                        className="hover:text-yellow-300"
-                    >
-                        Category
-                    </button>
-
+            
                     {
                         !token ? (
                             <button
@@ -207,15 +202,6 @@ export default function User() {
                                                 className="block w-full text-left px-4 py-2 hover:bg-gray-200"
                                             >
                                                 Wishlist
-                                            </button>
-
-                                            <button
-                                                onClick={() =>
-                                                    navigate("/category")
-                                                }
-                                                className="block w-full text-left px-4 py-2 hover:bg-gray-200"
-                                            >
-                                                Category
                                             </button>
 
                                             <button
@@ -328,7 +314,7 @@ export default function User() {
                             </h3>
 
                             <p className="text-gray-600 mt-2">
-                                ✍️ {book.author}
+                                ✍️ {book.author?.name}
                             </p>
 
                             <div className="flex gap-3 mt-4 justify-between text-center">
@@ -391,8 +377,11 @@ export default function User() {
                     </button>
 
                 </div>
+
             </div>
 
         </div >
     );
 }
+
+

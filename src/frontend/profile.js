@@ -81,7 +81,7 @@ export default function Profile() {
 
                         <p className="text-gray-500 text-sm">
                             Email Address
-                        </p>
+                        </p>    
 
                         <p className="text-lg font-semibold">
                             {user.email}

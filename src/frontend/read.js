@@ -41,7 +41,7 @@ const { data: book = {} } = useQuery({
               <div className="text-center">
                   <img
                     src="https://covers.openlibrary.org/b/isbn/9780735211292-L.jpg"
-                    alt="Atomic Habits"
+                    alt="Atomic Habits" 
                     className="w-1/3 h-1/2 mx-auto object-cover rounded"
                 />
 
@@ -50,7 +50,7 @@ const { data: book = {} } = useQuery({
                 </h1>
 
                 <h3 className="text-xl text-gray-600 mb-6">
-                    Author:  {book.author}
+                    Author:  {book.author?.name}
                 </h3>
 
               

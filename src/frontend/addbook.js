@@ -1,25 +1,41 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 export default function AddBook() {
 
     const [title, setTitle] = useState("");
-    const [author, setAuthor] = useState("");
-    const [category, setCategory] = useState("");
+    const [authors, setAuthors] = useState([]);
+    const [authorId, setAuthorId] = useState("");
+    const [categoryId, setCategoryId] = useState("");
+    const [categories, setCategories] = useState([]);
     const queryClient = useQueryClient();
 
     const addBookMutation = useMutation({
+
         mutationFn: async (bookData) => {
+
+            const token = localStorage.getItem("accessToken");
+
             const response = await fetch(
                 "http://localhost:4000/book",
                 {
                     method: "POST",
+
                     headers: {
                         "Content-Type": "application/json",
+                        Authorization: `Bearer ${token}`,
                     },
+
                     body: JSON.stringify(bookData),
                 }
             );
-            return response.json();
+
+            const data = await response.json();
+
+            if (!response.ok) {
+                throw new Error(data.message);
+            }
+
+            return data;
         },
 
         onSuccess: (data) => {
@@ -27,24 +43,44 @@ export default function AddBook() {
             alert(data.message);
 
             setTitle("");
-            setAuthor("");
-            setCategory("");
+            setAuthorId("");
+            setCategoryId("");
 
             queryClient.invalidateQueries({
                 queryKey: ["book"],
             });
+
         },
 
         onError: (error) => {
-    alert(error.message);
-}
+
+            alert(error.message);
+
+        }
 
     });
+
+    useEffect(() => {
+
+        fetch("http://localhost:4000/category")
+            .then((resp) => resp.json())
+            .then((data) => {
+
+                setCategories(data);
+
+            });
+
+        fetch("http://localhost:4000/author")
+            .then((resp) => resp.json())
+            .then((data) => {
+                setAuthors(data);
+            });
+    }, []);
 
 
     function handleSubmit() {
 
-        if (!title || !author || !category) {
+        if (!title || !authorId || !categoryId) {
 
             alert("All fileds are required");
 
@@ -53,8 +89,8 @@ export default function AddBook() {
 
         addBookMutation.mutate({
             title,
-            author,
-            category,
+            authorId,
+            categoryId,
         });
     }
 
@@ -75,21 +111,55 @@ export default function AddBook() {
                     className="border p-3 rounded"
                 />
 
-                <input
-                    type="text"
-                    placeholder="Author Name"
-                    value={author}
-                    onChange={(e) => setAuthor(e.target.value)}
-                    className="border p-3 rounded"
-                />
+                <select
+                    value={authorId}
+                    onChange={(e) => setAuthorId(e.target.value)}
+                    className="border p-3 rounded w-full"
+                >
+                    <option value="">Select Author</option>
 
-                <input
-                    type="text"
-                    placeholder="Book Category"
-                    value={category}
-                    onChange={(e) => setCategory(e.target.value)}
-                    className="border p-3 rounded"
-                />
+                    {authors.map((author) => (
+                        <option key={author._id} value={author._id}>
+                            {author.name}
+                        </option>
+                    ))}
+                </select>
+
+
+                <select
+
+                    value={categoryId}
+
+                    onChange={(e) => setCategoryId(e.target.value)}
+
+                    className="border p-3 rounded w-full"
+
+                >
+
+                    <option value="">
+
+                        Select Category
+
+                    </option>
+
+                    {
+
+                        categories.map((category) => (
+
+                            <option
+                                key={category._id}
+
+                                value={category._id}
+                            >
+                                {category.name}
+
+                            </option>
+
+                        ))
+
+                    }
+
+                </select>
 
                 <button
                     onClick={handleSubmit}
