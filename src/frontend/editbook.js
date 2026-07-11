@@ -14,7 +14,7 @@ export default function EditBook() {
 
     function updateBook() {
 
-        fetch( `${process.env.REACT_APP_API_URL}/book/${id}`, {
+        fetch(`${process.env.REACT_APP_API_URL}/book/${id}`, {
             method: "PUT",
             headers: {
                 "Content-Type": "application/json"

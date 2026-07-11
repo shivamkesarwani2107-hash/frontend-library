@@ -16,7 +16,7 @@ export default function AddBook() {
             const token = localStorage.getItem("accessToken");
 
             const response = await fetch(
-                 `${process.env.REACT_APP_API_URL}/book`,
+                `${process.env.REACT_APP_API_URL}/book`,
                 {
                     method: "POST",
 
@@ -62,19 +62,19 @@ export default function AddBook() {
 
     useEffect(() => {
 
-        `${process.env.REACT_APP_API_URL}/category`
+        fetch(`${process.env.REACT_APP_API_URL}/category`)
             .then((resp) => resp.json())
             .then((data) => {
-
                 setCategories(data);
-
             });
 
-        `${process.env.REACT_APP_API_URL}/author`
+
+        fetch(`${process.env.REACT_APP_API_URL}/author`)
             .then((resp) => resp.json())
             .then((data) => {
                 setAuthors(data);
             });
+            
     }, []);
 
 
