@@ -29,8 +29,8 @@ export default function User() {
         );
 
         return response.json();
-    };  
-    
+    };
+
     const {
         data: book = [],
         isLoading,
@@ -52,23 +52,19 @@ export default function User() {
                 "accessToken"
             );
 
-        fetch(
-            `http://localhost:4000/wishlist/${id}`,
-            {
-                method: "PUT",
-
-                headers: {
-                    Authorization:
-                        `Bearer ${token}`
-                }
+        fetch(`${import.meta.env.VITE_API_URL}/wishlist/${id}`, {
+            method: "PUT",
+            headers: {
+                Authorization: `Bearer ${token}`
             }
+        }
         )
             .then((resp) => resp.json())
             .then((data) => alert(data.message));
     }
 
     function deleteBook(id) {
-        fetch(`http://localhost:4000/book/${id}`, {
+        fetch(`${import.meta.env.VITE_API_URL}/book/${id}`, {
             method: "DELETE"
         })
             .then((resp) => resp.json())
@@ -80,8 +76,8 @@ export default function User() {
                         (book) => book._id !== id
                     )
                 );
-            
-        })
+
+            })
     }
 
     function handleLogout() {
@@ -155,7 +151,7 @@ export default function User() {
                     >
                         Wishlist
                     </button>
-            
+
                     {
                         !token ? (
                             <button
