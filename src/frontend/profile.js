@@ -12,7 +12,7 @@ export default function Profile() {
             );
 
         fetch(
-            "http://localhost:4000/profile",
+             `${process.env.REACT_APP_API_URL}/profile`,
             {
                 headers: {
                     Authorization:

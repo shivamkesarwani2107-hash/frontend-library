@@ -9,7 +9,7 @@ export default function Wishlist() {
         const token = localStorage.getItem("accessToken");
 
         const resp = await fetch(
-            "http://localhost:4000/wishlist",
+             `${process.env.REACT_APP_API_URL}/wishlist`,
             {
                 headers: {
                     Authorization: `Bearer ${token}`,

@@ -11,7 +11,7 @@ export default function Signup() {
     const signMutation = useMutation({
         mutationFn: async (signupData) => {
             const resp = await fetch(
-                "http://localhost:4000/signup",
+                `${process.env.REACT_APP_API_URL}/signup`,
                 {
                     method: "POST",
                     headers: {

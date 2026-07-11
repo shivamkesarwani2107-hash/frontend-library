@@ -14,7 +14,7 @@ export default function EditBook() {
 
     function updateBook() {
 
-        fetch(`http://localhost:4000/book/${id}`, {
+        fetch( `${process.env.REACT_APP_API_URL}/book/${id}`, {
             method: "PUT",
             headers: {
                 "Content-Type": "application/json"
@@ -41,7 +41,7 @@ export default function EditBook() {
     useEffect(() => {
 
 
-        fetch(`http://localhost:4000/book/${id}`)
+        fetch( `${process.env.REACT_APP_API_URL}/login/${id}`)
             .then((resp) => resp.json())
             .then((book) => {
                 console.log("book response:", book);
@@ -49,7 +49,7 @@ export default function EditBook() {
             });
 
 
-        fetch("http://localhost:4000/category")
+        fetch( `${process.env.REACT_APP_API_URL}/category`)
             .then((resp) => resp.json())
             .then((data) => {
 
@@ -57,7 +57,7 @@ export default function EditBook() {
 
             });
 
-        fetch("http://localhost:4000/author")
+        fetch( `${process.env.REACT_APP_API_URL}/author`)
             .then((resp) => resp.json())
             .then((data) => {
                 setAuthors(data);

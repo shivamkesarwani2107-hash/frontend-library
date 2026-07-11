@@ -7,7 +7,7 @@ const fetchBook = async () =>{
     console.log("BOOK TESTING");
 
     const resp =await fetch(
-        `http://localhost:4000/book/${id}`
+         `${process.env.REACT_APP_API_URL}/book/${id}`
     );
 
     const data = await resp.json();
