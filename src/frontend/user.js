@@ -25,7 +25,7 @@ export default function User() {
         const [, page, limit, search, sort] = queryKey;
 
         const response = await fetch(
-            `${import.meta.env.VITE_API_URL}/book?page=${page}&limit=${limit}&search=${search}&sort=${sort}`
+            `${process.env.REACT_APP_API_URL}/book?page=${page}&limit=${limit}&search=${search}&sort=${sort}`
         );
 
         return response.json();
@@ -52,7 +52,7 @@ export default function User() {
                 "accessToken"
             );
 
-        fetch(`${import.meta.env.VITE_API_URL}/wishlist/${id}`, {
+        fetch(`${process.env.REACT_APP_API_URL}/wishlist/${id}`, {
             method: "PUT",
             headers: {
                 Authorization: `Bearer ${token}`
@@ -64,7 +64,7 @@ export default function User() {
     }
 
     function deleteBook(id) {
-        fetch(`${import.meta.env.VITE_API_URL}/book/${id}`, {
+        fetch(`${process.env.REACT_APP_API_URL}/book/${id}`, {
             method: "DELETE"
         })
             .then((resp) => resp.json())
