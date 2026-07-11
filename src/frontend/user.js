@@ -25,7 +25,7 @@ export default function User() {
         const [, page, limit, search, sort] = queryKey;
 
         const response = await fetch(
-            `http://localhost:4000/book?page=${page}&limit=${limit}&search=${search}&sort=${sort}`
+            `${import.meta.env.VITE_API_URL}/book?page=${page}&limit=${limit}&search=${search}&sort=${sort}`
         );
 
         return response.json();
@@ -80,7 +80,8 @@ export default function User() {
                         (book) => book._id !== id
                     )
                 );
-            })
+            
+        })
     }
 
     function handleLogout() {
