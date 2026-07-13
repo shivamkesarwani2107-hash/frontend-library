@@ -118,14 +118,13 @@ export default function User() {
     return (
         <div className="min-h-screen bg-slate-100">
 
-            <div className="flex justify-between items-center px-10 py-5 bg-blue-600 text-white shadow-lg">
+            <div className="flex flex-col md:flex-row justify-between items-center gap-4 px-4 md:px-10 py-5 bg-blue-600 text-white shadow-lg">
 
                 <h1 className="text-2xl font-bold">
                     📚 Library Management
                 </h1>
 
-                <div className="flex gap-6 items-center">
-
+                <div className="flex flex-wrap justify-center gap-3 md:gap-6 items-center">
 
                     {
                         token ? (
@@ -227,13 +226,13 @@ export default function User() {
 
             </div>
 
-            <div className="flex flex-col items-center justify-center mt-20">
+            <div className="flex flex-col items-center justify-center mt-10 md:mt-20 px-4 text-center">
 
-                <h1 className="text-5xl font-bold text-blue-700 mb-4">
+                <h1 className="text-3xl md:text-5xl font-bold text-blue-700 mb-4">
                     Welcome to Library
                 </h1>
 
-                <p className="text-gray-600 text-lg mb-6">
+                <p className="text-gray-600 text-base md:text-lg mb-6">
                     Discover, Manage and Organize Your Books Easily
                 </p>
 
