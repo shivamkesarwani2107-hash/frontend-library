@@ -86,7 +86,7 @@ export default function EditBook() {
                 <select
                     value={authorId}
                     onChange={(e) => setAuthorId(e.target.value)}
-                    className="border p-3 rounded w-full"
+                    className="border p-3 rounded w-full mb-3"
                 >
                     <option value="">Select Author</option>
 
@@ -103,7 +103,7 @@ export default function EditBook() {
 
                     onChange={(e) => setCategoryId(e.target.value)}
 
-                    className="border p-3 rounded w-full"
+                    className="border p-3 rounded w-full mb-3"
 
                 >
 
