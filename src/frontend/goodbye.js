@@ -7,7 +7,7 @@ export default function Goodbye() {
     return (
         <div className="min-h-screen flex flex-col justify-center items-center bg-slate-100">
 
-            <h1 className="text-5xl font-bold text-blue-600 mb-4">
+            <h1 className="text-3xl md:text-5xl font-bold text-blue-600 mb-4">
                 👋 Thank You For Visiting
             </h1>
 
@@ -15,7 +15,7 @@ export default function Goodbye() {
                 Hope to see you again soon.
             </p>
 
-            <div className="flex gap-4">
+            <div className="flex flex-col md:flex-row gap-4">
 
                 <button
                     onClick={() => navigate("/login")}

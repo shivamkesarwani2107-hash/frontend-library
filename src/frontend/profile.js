@@ -31,7 +31,7 @@ export default function Profile() {
 
         <div className="min-h-screen bg-slate-100 flex justify-center items-center">
 
-            <div className="bg-white w-[500px] rounded-2xl shadow-lg p-8">
+            <div className="bg-white w-[90%] max-w-lg rounded-2xl shadow-lg p-8">
 
                 <div className="flex flex-col items-center">
 

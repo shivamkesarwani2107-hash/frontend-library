@@ -69,7 +69,7 @@ export default function EditBook() {
     return (
         <div className="min-h-screen flex justify-center items-center bg-slate-100">
 
-            <div className="bg-white p-8 rounded-lg shadow-md w-[500px]">
+            <div className="bg-white p-6 md:p-8 rounded-lg shadow-md w-[90%] max-w-lg">
 
                 <h1 className="text-3xl font-bold text-center text-blue-600 mb-6">
                     Edit Book

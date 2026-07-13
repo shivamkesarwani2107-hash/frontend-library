@@ -293,7 +293,7 @@ export default function User() {
                         onChange={(e) => {
                             setSearch(e.target.value);
                             setPage(1);
-                        }} className="border p-3 rounded-lg w-[400px] outline-none hover:border-2 hover:border-slate-400"
+                        }} className="border p-3 rounded-lg w-full md:w-[400px] outline-none hover:border-2 hover:border-slate-400"
                     />
                 </div>
 
@@ -302,7 +302,7 @@ export default function User() {
 
                         <div
                             key={book._id}
-                            className="bg-white border text-center rounded-lg p-5 mb-4 max-w-md mx-auto shadow hover:shadow-md transition"
+                            className="bg-white border text-center rounded-lg p-5 mb-4 w-full max-w-md mx-auto shadow hover:shadow-md transition"
                         >
 
                             <h3 className="text-xl font-bold text-blue-600">
@@ -313,7 +313,7 @@ export default function User() {
                                 ✍️ {book.author?.name}
                             </p>
 
-                            <div className="flex gap-3 mt-4 justify-between text-center">
+                            <div className="flex flex-wrap gap-2 mt-4 justify-center text-center">
 
                                 <button
                                     onClick={() => addToWishlist(book._id)}

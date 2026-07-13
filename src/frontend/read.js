@@ -42,7 +42,7 @@ const { data: book = {} } = useQuery({
                   <img
                     src="https://covers.openlibrary.org/b/isbn/9780735211292-L.jpg"
                     alt="Atomic Habits" 
-                    className="w-1/3 h-1/2 mx-auto object-cover rounded"
+                    className="w-48 md:w-72 h-1/2 mx-auto object-cover rounded"
                 />
 
                 <h1 className="text-4xl font-bold text-blue-600 mb-4">

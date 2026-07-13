@@ -76,7 +76,7 @@ export default function Login() {
     return (
         <div className="flex justify-center items-center h-screen bg-gray-100">
 
-            <div className="flex flex-col items-center gap-4 w-1/3">
+            <div className="flex flex-col items-center gap-4 max-w-md w-full">
 
                 <h1 className="underline font-bold text-sky-500 text-[35px]">
                     Login
