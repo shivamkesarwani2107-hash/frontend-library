@@ -338,11 +338,10 @@ export default function User() {
 
                                 <button
                                     onClick={() => navigate(`/editbook/${book._id}`)}
-                                    className="bg-yellow-500 text-white px-3 py-2 rounded-md text-sm"
+                                    className="bg-yellow-500 text-white px-3 py-2 rounded-md text-sm hover:bg-yellow-300"
                                 >
                                     ✏️ Edit
                                 </button>
-
 
                             </div>
 
