@@ -97,7 +97,7 @@ export default function AddBook() {
     return (
         <div className="flex justify-center items-center h-screen">
 
-            <div className="flex flex-col gap-4 max-w-md w-full">
+            <div className="flex flex-col gap-4 w-full max-w-md">
 
                 <h1 className="text-3xl font-bold text-center">
                     Add Book

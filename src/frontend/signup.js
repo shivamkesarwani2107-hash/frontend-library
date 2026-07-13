@@ -74,7 +74,7 @@ export default function Signup() {
 
     return (
         <div className="flex justify-center items-center h-screen">
-            <div className="flex flex-col items-center gap-4 max-w-md w-full">
+            <div className="flex flex-col items-center gap-4 w-full max-w-md">
                 <h1 className="underline font-bold text-sky-500 text-[35px]">Sign UP</h1>
 
                 <input
